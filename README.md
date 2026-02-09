@@ -52,7 +52,7 @@ https://github.com/koshal50/Ai-flash/blob/main/Generating_Cinematic_Nightmare_Fo
 
 ### 1 · Stranger Things Triptych Newspaper Collage
 
-> **Output →** `Gemini_Generated_Image_emczg9emczg9emcz.png`
+> **Output →** `Gemini_Generated_Image_v1u7w3v1u7w3v1u7.png`
 
 <p align="center">
   <img src="Gemini_Generated_Image_v1u7w3v1u7w3v1u7.png" width="600" alt="Prompt 1 output" />
@@ -60,8 +60,7 @@ https://github.com/koshal50/Ai-flash/blob/main/Generating_Cinematic_Nightmare_Fo
 
 ```json
 {
-  "model": "nano banana",
-  "prompt": "A triptych collage photograph displayed on a textured, dull off-white newspaper page background. The image is strictly divided into three vertical columns. \n\n[MIDDLE COLUMN]: At the very top, the retro red glowing 'Stranger Things' title logo. Directly below the logo is a grainy, printed photograph of young Will Byers, front profile view, looking terrified while wearing a hospital gown inside a dimly lit laboratory room. Below Will's photo, a block of printed typewriter text reads exacty: 'but the first gate was open by a scream in 1983'. \n\n[LEFT COLUMN]: At the top, a block of printed typewriter text reads exactly: 'in the depths of the upside down , vecna prepared to open the final gate'. Below the text is a landscape photograph of the town of Hawkins being overtaken by dark vines and spores of the Upside Down, but the sky above the town is surprisingly normal, dull, grey, and overcast, not red. \n\n[RIGHT COLUMN]: At the top, a block of printed typewriter text reads exactly: 'if you could hear a voice from static , would you believe itsyour friend or just thw wind?'. Below the text is a photograph of the exterior building of Hawkins National Laboratory heavily bathed in ominous, intense red light."
+  "prompt": "A cinematic, low-angle shot in the style of 1980s sci-fi horror. A terrifying, humanoid villain made of dark, twisted vines and wet flesh is physically stepping out of a massive, glowing red rift that tears across the entire width of a concrete laboratory wall. The room is dark and filled with floating ash and blue spores. In the foreground, with their backs to the camera, two brave teenage girls stand ready to fight, facing the monster. One girl has short buzzed hair, the other has long red hair. On the floor, there are exactly two unconscious security guards lying defeated: one lying near the monster's feet by the wall, and one lying closer to the girls. High contrast, ominous red and blue lighting, hyper-realistic, 8k resolution."
 }
 ```
 
@@ -69,7 +68,7 @@ https://github.com/koshal50/Ai-flash/blob/main/Generating_Cinematic_Nightmare_Fo
 
 ### 2 · Cinematic 80s Horror — Villain Emerging from the Rift
 
-> **Output →** `Gemini_Generated_Image_v1u7w3v1u7w3v1u7.png`
+> **Output →** `Gemini_Generated_Image_emczg9emczg9emcz.png`
 
 
 <p align="center">
@@ -78,7 +77,8 @@ https://github.com/koshal50/Ai-flash/blob/main/Generating_Cinematic_Nightmare_Fo
 
 ```json
 {
-  "prompt": "A cinematic, low-angle shot in the style of 1980s sci-fi horror. A terrifying, humanoid villain made of dark, twisted vines and wet flesh is physically stepping out of a massive, glowing red rift that tears across the entire width of a concrete laboratory wall. The room is dark and filled with floating ash and blue spores. In the foreground, with their backs to the camera, two brave teenage girls stand ready to fight, facing the monster. One girl has short buzzed hair, the other has long red hair. On the floor, there are exactly two unconscious security guards lying defeated: one lying near the monster's feet by the wall, and one lying closer to the girls. High contrast, ominous red and blue lighting, hyper-realistic, 8k resolution."
+  "model": "nano banana",
+  "prompt": "A triptych collage photograph displayed on a textured, dull off-white newspaper page background. The image is strictly divided into three vertical columns. \n\n[MIDDLE COLUMN]: At the very top, the retro red glowing 'Stranger Things' title logo. Directly below the logo is a grainy, printed photograph of young Will Byers, front profile view, looking terrified while wearing a hospital gown inside a dimly lit laboratory room. Below Will's photo, a block of printed typewriter text reads exacty: 'but the first gate was open by a scream in 1983'. \n\n[LEFT COLUMN]: At the top, a block of printed typewriter text reads exactly: 'in the depths of the upside down , vecna prepared to open the final gate'. Below the text is a landscape photograph of the town of Hawkins being overtaken by dark vines and spores of the Upside Down, but the sky above the town is surprisingly normal, dull, grey, and overcast, not red. \n\n[RIGHT COLUMN]: At the top, a block of printed typewriter text reads exactly: 'if you could hear a voice from static , would you believe itsyour friend or just thw wind?'. Below the text is a photograph of the exterior building of Hawkins National Laboratory heavily bathed in ominous, intense red light."
 }
 ```
 
