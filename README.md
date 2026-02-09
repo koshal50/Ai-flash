@@ -1,4 +1,3 @@
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8927c689-a5ea-4da2-b59f-bd06c402edf9" /># Ai-flash
 prompt history
 1) image orompt - {
   "model": "nano banana",
@@ -39,3 +38,14 @@ Every console sparked and died, leaving them with only one choice: win the fight
 here, or let the Upside Down claim the memory of Hawkins forever.
 
 Generate the image using this script given above 
+
+6)Generate an cinematic 8 second footage using the following prompt 
+The lab melts away into a living nightmare—metal turning to flesh, lights becoming pulsing veins.
+Eleven strains to hold the creature back as the wormhole expands, pulling reality apart.
+The monster reshapes itself, its face flickering with distorted memories of everyone Mike has lost.
+His fear feeds the space, causing the ground to fracture into floating fragments of Hawkins.
+Eleven's blue energy weakens—not fighting a creature, but grief made real.
+The monster steps back, smiling.
+This isn't a battle anymore.
+It's a test.
+Generate a video
