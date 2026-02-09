@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Narrative Unfolds</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Reset & Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Enable scrolling */
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px; /* Inter-Small */
+            font-weight: 300;
+            color: #ccc;
+        }
+
+        /* --- Animated Background --- */
+        .background-layer {
+            position: fixed; /* Fixed so it stays while scrolling */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                270deg, 
+                #1a0505, /* Deep dull red */
+                #3d0e0e, 
+                #0e0e3d, 
+                #05051a  /* Deep dull blue */
+            );
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Main Layout Container --- */
+        .timeline-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 80px; /* Top spacing */
+            padding-bottom: 100px;
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* --- The Snake SVG Overlay --- */
+        .snake-svg-container {
+            position: absolute;
+            top: 80px; /* Match container padding-top */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px; /* Width to accommodate the weave */
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .snake-path {
+            fill: none;
+            stroke: #d63333; /* Red Snake */
+            stroke-width: 2;
+            stroke-linecap: round;
+            /* Filter for the glow */
+            filter: drop-shadow(0 0 5px rgba(214, 51, 51, 0.8));
+            
+            /* Animation Setup */
+            stroke-dasharray: 2000; /* Long enough to cover the path */
+            stroke-dashoffset: 2000;
+            animation: snakeMove 8s ease-in-out infinite;
+        }
+
+        @keyframes snakeMove {
+            0% { stroke-dashoffset: 2000; opacity: 0; }
+            10% { opacity: 1; }
+            80% { stroke-dashoffset: 0; opacity: 1; }
+            100% { stroke-dashoffset: -200; opacity: 0; }
+        }
+
+        /* --- Rows (Pebbles & Content) --- */
+        .timeline-row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top of pebble */
+            width: 100%;
+            /* 1 finger spacing approx 60px-80px + content height */
+            margin-bottom: 80px; 
+            position: relative;
+        }
+
+        /* --- The Pebble --- */
+        .pebble {
+            width: 24px;
+            height: 12px; /* Height is half of width */
+            background-color: #333; /* Dull dark stone color */
+            border-radius: 50%; /* Oval shape */
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.05);
+            flex-shrink: 0;
+            z-index: 2;
+            margin: 0 40px; /* Space between pebble and text */
+            position: relative;
+            top: 5px; /* Slight visual adjustment */
+        }
+
+        /* --- Cards/Text Areas --- */
+        .card {
+            width: 250px;
+            opacity: 0; /* Hidden initially for scroll reveal */
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card-left {
+            text-align: right;
+        }
+
+        .card-right {
+            text-align: left;
+        }
+
+        /* Empty Spacer for the opposite side of the timeline to keep balance */
+        .spacer {
+            width: 250px;
+        }
+
+        /* --- Typography Styles --- */
+        h2 {
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 13px; /* Inter Small */
+            color: #889; /* Dull grey-blue text */
+            line-height: 1.5;
+        }
+
+        /* Specific Color Themes */
+        .theme-white h2 {
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .theme-red h2 {
+            color: #d63333;
+            text-shadow: 0 0 10px rgba(214, 51, 51, 0.5);
+        }
+
+        .theme-blue h2 {
+            color: #4d4dff;
+            text-shadow: 0 0 10px rgba(77, 77, 255, 0.5);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-layer"></div>
+
+    <div class="timeline-container">
+        
+        <div class="snake-svg-container">
+            <svg width="100%" height="1500px" viewBox="0 0 100 1500" preserveAspectRatio="none">
+                <path class="snake-path" d="M 50 0 
+                           Q 80 50 50 100 
+                           Q 20 150 50 200 
+                           Q 80 250 50 300 
+                           Q 20 350 50 400 
+                           Q 80 450 50 500 
+                           Q 20 550 50 600
+                           Q 80 650 50 700
+                           Q 20 750 50 800" />
+            </svg>
+        </div>
+
+        <div class="timeline-row">
+            <div class="card card-left theme-white">
+                <h2>Power</h2>
+                <p>The beginning of something strange</p>
+            </div>
+            <div class="pebble"></div>
+            <div class="spacer"></div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="spacer"></div>
+            <div class="pebble"></div>
+            <div class="card card-right theme-red">
+                <h2>Connection</h2>
+                <p>Bonds formed in darkness</p>
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="card card-left theme-blue">
+                <h2>Story</h2>
+                <p>The narrative unfolds</p>
+            </div>
+            <div class="pebble"></div>
+            <div class="spacer"></div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="spacer"></div>
+            <div class="pebble"></div>
+            <div class="card card-right theme-white">
+                <h2>Reality</h2>
+                <p>Truth becomes uncertain</p>
+            </div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="card card-left theme-red">
+                <h2>Fracture</h2>
+                <p>The world splits apart</p>
+            </div>
+            <div class="pebble"></div>
+            <div class="spacer"></div>
+        </div>
+
+        <div class="timeline-row">
+            <div class="spacer"></div>
+            <div class="pebble"></div>
+            <div class="card card-right theme-blue">
+                <h2>Upside Down</h2>
+                <p>Nothing will be the same</p>
+            </div>
+        </div>
+
+        <div style="height: 200px;"></div>
+
+    </div>
+
+    <script>
+        // Intersection Observer for Scroll Reveal
+        const observerOptions = {
+            root: null, // Use the viewport
+            rootMargin: '0px',
+            threshold: 0.2 // Trigger when 20% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Optional: Stop observing once visible to avoid re-triggering
+                    // observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        // Select all cards and observe them
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>

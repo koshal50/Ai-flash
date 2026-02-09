@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Untold Story — Power · Connection · Story</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: #d63333 #0a0a0a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            color: #c8c8d0;
+            background: #050508;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #d63333; border-radius: 3px; }
+
+        /* ============================================
+           ANIMATED BACKGROUND (from ai.html)
+        ============================================ */
+        .bg-fixed {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(270deg, #0f0505, #2e0b0b, #0b0b2e, #05050f);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Noise texture overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ============================================
+           LOADING / INTRO SCREEN
+        ============================================ */
+        .loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #050508;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-line {
+            width: 2px;
+            height: 0;
+            background: linear-gradient(to bottom, transparent, #fff, transparent);
+            box-shadow: 0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.2);
+            animation: lineGrow 2s ease forwards;
+        }
+
+        @keyframes lineGrow {
+            to { height: 120px; }
+        }
+
+        .loader-text {
+            margin-top: 30px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: rgba(255,255,255,0.5);
+            animation: fadeInUp 1s 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(10px); }
+        }
+
+        /* ============================================
+           NAVIGATION
+        ============================================ */
+        nav {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(5,5,8,0.9), transparent);
+            transition: transform 0.4s ease;
+        }
+
+        nav.nav-hidden { transform: translateY(-100%); }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: #d63333; }
+
+        /* ============================================
+           HERO SECTION (inspired by ai.html)
+        ============================================ */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* The angelic line from ai.html */
+        .angelic-line {
+            position: absolute;
+            height: 70%;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4) 10%, #fff 50%, rgba(255,255,255,0.4) 90%, transparent);
+            box-shadow: 0 0 4px rgba(255,255,255,0.6), 0 0 10px rgba(255,255,255,0.4), 0 0 20px rgba(255,255,255,0.2);
+            border-radius: 100%;
+            z-index: 1;
+            opacity: 0;
+            animation: lineFadeIn 2s 2.5s ease forwards;
+        }
+
+        @keyframes lineFadeIn {
+            to { opacity: 1; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero-top-words {
+            display: flex;
+            justify-content: center;
+            gap: 160px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 1.2s 3s ease forwards;
+        }
+
+        .word-power {
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 14px;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 0 8px rgba(255,255,255,0.6);
+        }
+
+        .word-connection {
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 14px;
+            color: #d63333;
+            text-shadow: 0 0 8px rgba(214,51,51,0.6);
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(48px, 8vw, 100px);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1.2s 3.4s ease forwards;
+        }
+
+        .hero-subtitle {
+            font-size: 13px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            opacity: 0;
+            animation: fadeInUp 1.2s 3.8s ease forwards;
+        }
+
+        /* Story letters animation from ai.html */
+        .story-letters {
+            display: flex;
+            justify-content: center;
+            margin-top: 60px;
+            opacity: 0;
+            animation: fadeInUp 1s 4.2s ease forwards;
+        }
+
+        .story-letter {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 500;
+            color: #4d4dff;
+            text-shadow: 0 0 8px rgba(77,77,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0;
+            animation: letterAppear 3s linear infinite;
+        }
+
+        .story-letter:nth-child(1) { animation-delay: 4.5s; }
+        .story-letter:nth-child(2) { animation-delay: 4.7s; }
+        .story-letter:nth-child(3) { animation-delay: 4.9s; }
+        .story-letter:nth-child(4) { animation-delay: 5.1s; }
+        .story-letter:nth-child(5) { animation-delay: 5.3s; }
+
+        @keyframes letterAppear {
+            0%   { opacity: 0; filter: blur(3px); }
+            10%  { opacity: 1; filter: blur(0); }
+            50%  { opacity: 1; filter: blur(0); }
+            90%  { opacity: 0; filter: blur(3px); }
+            100% { opacity: 0; }
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeInUp 1s 5s ease forwards;
+        }
+
+        .scroll-hint span {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .scroll-hint .arrow {
+            width: 1px;
+            height: 30px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+            animation: scrollPulse 2s ease infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        /* ============================================
+           CHAPTER SECTIONS
+        ============================================ */
+        .chapter {
+            min-height: 100vh;
+            padding: 120px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chapter-inner {
+            max-width: 1100px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .chapter-inner.reverse { direction: rtl; }
+        .chapter-inner.reverse > * { direction: ltr; }
+
+        .chapter-text {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s ease;
+        }
+
+        .chapter-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chapter-number {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: #d63333;
+            margin-bottom: 16px;
+        }
+
+        .chapter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .chapter-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(200,200,210,0.7);
+            max-width: 420px;
+        }
+
+        .chapter-media {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            transition: all 1.2s ease;
+        }
+
+        .chapter-media.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .media-frame {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .media-frame::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            right: -1px; bottom: -1px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, rgba(214,51,51,0.3), rgba(77,77,255,0.3));
+            z-index: -1;
+        }
+
+        .media-frame img,
+        .media-frame video {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .media-caption {
+            margin-top: 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.25);
+        }
+
+        /* ============================================
+           VIDEO CINEMATIC SECTION
+        ============================================ */
+        .video-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            filter: brightness(0.5) contrast(1.2);
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to bottom, #050508, transparent 30%, transparent 70%, #050508);
+            z-index: 1;
+        }
+
+        .video-text {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s ease;
+        }
+
+        .video-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .video-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 64px);
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .video-text p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 0.1em;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           TIMELINE SECTION (from ai2.html)
+        ============================================ */
+        .timeline-section {
+            padding: 120px 40px;
+            position: relative;
+        }
+
+        .timeline-section-title {
+            text-align: center;
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .timeline-section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 42px);
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .timeline-section-title p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .timeline-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Vertical glowing line */
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(214,51,51,0.4) 20%, rgba(77,77,255,0.4) 80%, transparent);
+            box-shadow: 0 0 8px rgba(214,51,51,0.2);
+        }
+
+        .timeline-row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        .pebble {
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, #d63333, #8b1a1a);
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(214,51,51,0.5);
+            flex-shrink: 0;
+            z-index: 2;
+            margin: 0 40px;
+            position: relative;
+            top: 5px;
+        }
+
+        .tl-card {
+            width: 280px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .tl-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tl-card-left { text-align: right; }
+        .tl-card-right { text-align: left; }
+
+        .tl-card h3 {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .tl-card p {
+            font-size: 13px;
+            color: rgba(200,200,210,0.5);
+            line-height: 1.6;
+        }
+
+        .tl-spacer { width: 280px; }
+
+        .theme-white h3 { color: rgba(255,255,255,0.9); text-shadow: 0 0 10px rgba(255,255,255,0.4); }
+        .theme-red h3   { color: #d63333; text-shadow: 0 0 10px rgba(214,51,51,0.4); }
+        .theme-blue h3  { color: #4d4dff; text-shadow: 0 0 10px rgba(77,77,255,0.4); }
+
+        /* ============================================
+           EMBEDDED HTML SECTION
+        ============================================ */
+        .embedded-section {
+            padding: 120px 40px;
+            text-align: center;
+        }
+
+        .embedded-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(24px, 3.5vw, 36px);
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .embedded-section > p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.1em;
+            margin-bottom: 50px;
+        }
+
+        .iframe-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .iframe-wrapper.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .iframe-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px; right: -1px; bottom: -1px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, rgba(214,51,51,0.25), rgba(77,77,255,0.25));
+            z-index: -1;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .iframe-label {
+            padding: 12px 0;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ============================================
+           GALLERY / COLLAGE SECTION
+        ============================================ */
+        .gallery-section {
+            padding: 120px 40px;
+        }
+
+        .gallery-section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .gallery-section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 42px);
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .gallery-section-title p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.92);
+            transition: all 1s ease;
+        }
+
+        .gallery-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease, filter 0.6s ease;
+            filter: brightness(0.7) saturate(0.8);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            filter: brightness(0.9) saturate(1);
+        }
+
+        .gallery-item .gallery-overlay {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; 
+            padding: 30px 20px 20px;
+            background: linear-gradient(to top, rgba(5,5,8,0.95), transparent);
+        }
+
+        .gallery-overlay h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .gallery-overlay span {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* ============================================
+           FINAL / CLOSING SECTION
+        ============================================ */
+        .closing {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .closing-line {
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.4), transparent);
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: lineFadeIn 1.5s ease forwards;
+            animation-play-state: paused;
+        }
+
+        .closing-line.visible { animation-play-state: running; }
+
+        .closing h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 6vw, 72px);
+            color: #fff;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.2s ease;
+        }
+
+        .closing p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.1em;
+            max-width: 400px;
+            line-height: 1.7;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1.2s 0.3s ease;
+        }
+
+        .closing.visible h2,
+        .closing.visible p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+        }
+
+        /* ============================================
+           DIVIDER
+        ============================================ */
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(214,51,51,0.2) 30%, rgba(77,77,255,0.2) 70%, transparent);
+            margin: 0;
+        }
+
+        /* ============================================
+           LIGHTBOX
+        ============================================ */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(5,5,8,0.95);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox img {
+            max-width: 85vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+            transform: scale(0.9);
+            transition: transform 0.5s ease;
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px; right: 30px;
+            font-size: 24px;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .lightbox-close:hover { color: #d63333; }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+        @media (max-width: 768px) {
+            .chapter-inner,
+            .chapter-inner.reverse {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                direction: ltr;
+            }
+
+            .hero-top-words { gap: 60px; }
+
+            .iframe-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-row {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .tl-card-left, .tl-card-right {
+                text-align: center;
+            }
+
+            .tl-spacer { display: none; }
+
+            .pebble { margin: 16px 0; }
+
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div class="loader" id="loader">
+        <div class="loader-line"></div>
+        <div class="loader-text">The story begins…</div>
+    </div>
+
+    <!-- FIXED BACKGROUND -->
+    <div class="bg-fixed"></div>
+    <div class="noise-overlay"></div>
+
+    <!-- FLOATING PARTICLES -->
+    <div class="particles" id="particles"></div>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <a href="#" class="nav-brand">The Untold</a>
+        <ul class="nav-links">
+            <li><a href="#hero">Prologue</a></li>
+            <li><a href="#ch1">Power</a></li>
+            <li><a href="#ch2">Connection</a></li>
+            <li><a href="#nightmare">Nightmare</a></li>
+            <li><a href="#timeline">Timeline</a></li>
+            <li><a href="#gallery">Visions</a></li>
+            <li><a href="#origins">Origins</a></li>
+            <li><a href="#closing">End</a></li>
+        </ul>
+    </nav>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="hero">
+        <div class="angelic-line"></div>
+        <div class="hero-content">
+            <div class="hero-top-words">
+                <span class="word-power">Power</span>
+                <span class="word-connection">Connection</span>
+            </div>
+            <h1 class="hero-title">The Untold<br>Story</h1>
+            <p class="hero-subtitle">A journey through darkness, light, and everything between</p>
+            <div class="story-letters">
+                <span class="story-letter">S</span>
+                <span class="story-letter">T</span>
+                <span class="story-letter">O</span>
+                <span class="story-letter">R</span>
+                <span class="story-letter">Y</span>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <span>Scroll to begin</span>
+            <div class="arrow"></div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== CHAPTER 1 — POWER ===================== -->
+    <section class="chapter" id="ch1">
+        <div class="chapter-inner">
+            <div class="chapter-text" data-reveal>
+                <div class="chapter-number">Chapter I</div>
+                <h2 class="chapter-title">The Awakening<br>of Power</h2>
+                <p class="chapter-desc">
+                    In the beginning, there was nothing but silence — a vast, consuming void 
+                    that stretched beyond comprehension. Then came the spark. Not of fire, 
+                    but of consciousness. A force so primal it bent reality around itself, 
+                    weaving threads of power into the fabric of existence. This was not 
+                    creation — this was <em>awakening</em>.
+                </p>
+            </div>
+            <div class="chapter-media" data-reveal>
+                <div class="media-frame">
+                    <img src="Gemini_Generated_Image_emczg9emczg9emcz.png" alt="The Awakening" loading="lazy" class="gallery-trigger">
+                </div>
+                <p class="media-caption">The first vision — generated by thought</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== CHAPTER 2 — CONNECTION ===================== -->
+    <section class="chapter" id="ch2">
+        <div class="chapter-inner reverse">
+            <div class="chapter-text" data-reveal>
+                <div class="chapter-number">Chapter II</div>
+                <h2 class="chapter-title">Bonds Forged<br>in Darkness</h2>
+                <p class="chapter-desc">
+                    Power alone is hollow. It echoes in empty corridors, searching for 
+                    something to hold. What came next was unexpected — connection. Two 
+                    forces, opposing yet drawn to each other, colliding in the dark. 
+                    Red met blue. Chaos met order. And in that impossible meeting, 
+                    something <em>new</em> was born.
+                </p>
+            </div>
+            <div class="chapter-media" data-reveal>
+                <div class="media-frame">
+                    <img src="ChatGPT Image Feb 9, 2026, 11_22_18 AM.png" alt="Connection" loading="lazy" class="gallery-trigger">
+                </div>
+                <p class="media-caption">Where two worlds collide — forged by imagination</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== CHAPTER 3 — CINEMATIC NIGHTMARE ===================== -->
+    <section class="video-section" id="nightmare">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="Generating_Cinematic_Nightmare_Footage.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+        <div class="video-text" data-reveal>
+            <div class="chapter-number" style="margin-bottom: 20px;">Chapter III</div>
+            <h2>The Nightmare<br>Unfolds</h2>
+            <p>
+                Every story has a turning point — a moment where the ground gives way 
+                and you fall into something you can't name. This is that moment. 
+                The cinematic nightmare — where reality fractures and the world 
+                becomes a place you no longer recognize.
+            </p>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== CHAPTER 4 — VIDEO PLAYER ===================== -->
+    <section class="chapter" id="ch4">
+        <div class="chapter-inner">
+            <div class="chapter-text" data-reveal>
+                <div class="chapter-number">Chapter IV</div>
+                <h2 class="chapter-title">Through the<br>Fractured Lens</h2>
+                <p class="chapter-desc">
+                    Watch as the nightmare takes form. Every frame pulses with 
+                    unease — a world caught between creation and destruction. 
+                    The footage you see is not fiction. It is a vision pulled 
+                    from the space between consciousness and dream, rendered 
+                    into something <em>terrifyingly real</em>.
+                </p>
+            </div>
+            <div class="chapter-media" data-reveal>
+                <div class="media-frame">
+                    <video controls playsinline preload="metadata" style="width:100%; border-radius:8px;">
+                        <source src="Generating_Cinematic_Nightmare_Footage.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <p class="media-caption">Cinematic nightmare footage — press play</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== TIMELINE (from ai2.html) ===================== -->
+    <section class="timeline-section" id="timeline">
+        <div class="timeline-section-title" data-reveal>
+            <h2>The Threads of Fate</h2>
+            <p>Each moment leads to the next</p>
+        </div>
+
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+
+            <div class="timeline-row">
+                <div class="tl-card tl-card-left theme-white" data-reveal>
+                    <h3>Power</h3>
+                    <p>The beginning of something strange — a force that cannot be contained, a truth that demands to be spoken.</p>
+                </div>
+                <div class="pebble"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="timeline-row">
+                <div class="tl-spacer"></div>
+                <div class="pebble"></div>
+                <div class="tl-card tl-card-right theme-red" data-reveal>
+                    <h3>Connection</h3>
+                    <p>Bonds formed in darkness. Two souls reaching through the void, finding each other against all odds.</p>
+                </div>
+            </div>
+
+            <div class="timeline-row">
+                <div class="tl-card tl-card-left theme-blue" data-reveal>
+                    <h3>Story</h3>
+                    <p>The narrative unfolds. Every chapter bleeds into the next, each word carrying the weight of what came before.</p>
+                </div>
+                <div class="pebble"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="timeline-row">
+                <div class="tl-spacer"></div>
+                <div class="pebble"></div>
+                <div class="tl-card tl-card-right theme-white" data-reveal>
+                    <h3>Reality</h3>
+                    <p>Truth becomes uncertain. The lines between real and imagined dissolve like ink in water.</p>
+                </div>
+            </div>
+
+            <div class="timeline-row">
+                <div class="tl-card tl-card-left theme-red" data-reveal>
+                    <h3>Fracture</h3>
+                    <p>The world splits apart. What was once whole becomes fragments — beautiful, dangerous, and scattered.</p>
+                </div>
+                <div class="pebble"></div>
+                <div class="tl-spacer"></div>
+            </div>
+
+            <div class="timeline-row">
+                <div class="tl-spacer"></div>
+                <div class="pebble"></div>
+                <div class="tl-card tl-card-right theme-blue" data-reveal>
+                    <h3>Upside Down</h3>
+                    <p>Nothing will ever be the same. The world has turned, and we must learn to walk on the ceiling.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== GALLERY ===================== -->
+    <section class="gallery-section" id="gallery">
+        <div class="gallery-section-title" data-reveal>
+            <h2>Visions from the Void</h2>
+            <p>Images pulled from between worlds</p>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item" data-reveal>
+                <img src="Gemini_Generated_Image_emczg9emczg9emcz.png" alt="Vision I" loading="lazy" class="gallery-trigger">
+                <div class="gallery-overlay">
+                    <h3>Vision I</h3>
+                    <span>The Awakening</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-reveal>
+                <img src="ChatGPT Image Feb 9, 2026, 11_22_18 AM.png" alt="Vision II" loading="lazy" class="gallery-trigger">
+                <div class="gallery-overlay">
+                    <h3>Vision II</h3>
+                    <span>The Meeting</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== EMBEDDED ORIGINALS ===================== -->
+    <section class="embedded-section" id="origins">
+        <h2>The Origin Files</h2>
+        <p>Where it all started — the original designs</p>
+
+        <div class="iframe-grid">
+            <div class="iframe-wrapper" data-reveal>
+                <iframe src="ai.html" title="Origin I — Power, Connection, Story"></iframe>
+                <div class="iframe-label">Origin I — The Spark</div>
+            </div>
+            <div class="iframe-wrapper" data-reveal>
+                <iframe src="ai2.html" title="Origin II — The Narrative Unfolds"></iframe>
+                <div class="iframe-label">Origin II — The Unfolding</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ===================== CLOSING ===================== -->
+    <section class="closing" id="closing" data-reveal>
+        <div class="closing-line"></div>
+        <h2>The End<br>Is Just The<br>Beginning</h2>
+        <p>Every ending writes a new beginning. The story doesn't stop here — it lives in you now.</p>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-close">✕</div>
+        <img src="" alt="Enlarged view" id="lightbox-img">
+    </div>
+
+    <!-- ===================== JAVASCRIPT ===================== -->
+    <script>
+        // ---- LOADER ----
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 2800);
+        });
+
+        // ---- PARTICLES ----
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                p.style.animationDelay = Math.random() * 10 + 's';
+                p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+                container.appendChild(p);
+            }
+        })();
+
+        // ---- SCROLL REVEAL ----
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('[data-reveal]').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Also observe closing section children
+        const closingSection = document.querySelector('.closing');
+        if (closingSection) {
+            revealObserver.observe(closingSection);
+            const closingLine = closingSection.querySelector('.closing-line');
+            if (closingLine) revealObserver.observe(closingLine);
+        }
+
+        // ---- NAV HIDE/SHOW ON SCROLL ----
+        let lastScroll = 0;
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                nav.classList.add('nav-hidden');
+            } else {
+                nav.classList.remove('nav-hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // ---- LIGHTBOX ----
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        document.querySelectorAll('.gallery-trigger').forEach(img => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+
+        // ---- SMOOTH SCROLL FOR NAV LINKS ----
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ---- PARALLAX ON HERO ----
+        const heroContent = document.querySelector('.hero-content');
+        const angelicLine = document.querySelector('.angelic-line');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            if (scrolled < window.innerHeight) {
+                const factor = scrolled / window.innerHeight;
+                heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+                heroContent.style.opacity = 1 - factor * 1.2;
+                angelicLine.style.transform = `translateY(${scrolled * 0.15}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
