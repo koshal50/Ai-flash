@@ -20,6 +20,15 @@ prompt history
 - font size was INTER-SMALL.
 -colors were on the dull-dark side
 
+4)To the previous html page, do these changes:
+- Now instead of the center vertical line, a line of oval pebbles (very short in height) and with width 2xheight with 1 finger space between them
+- from time to time a red line comes lingering like a snake from top and move towards bottom passing through each pebble in a snake-like fashion
+- The previous "Power" text is heading of the text "The beginning of something strange"
+- The previous "Connection" text is heading of the text "Bonds formed in darkness"
+- Add some cards similarly to the bottom of Power card with heading "Story" and body "The narrative unfolds" and another more bottom "Fracture" with body "The world splits apart"
+- Similarly below Connection card: "Reality" with body "Truth becomes uncertain" and heading "Upside down" with body "Nothing will be the same"
+-the cards should become visible one by one as we scroll downwards
+
 
 5)The barrier didn't just break—it shattered like glass.
 
@@ -49,3 +58,5 @@ The monster steps back, smiling.
 This isn't a battle anymore.
 It's a test.
 Generate a video
+
+7) create a story line like website using the contents in this folder. the folder includes images ,vdo, and html files include all as and use all of them 
