@@ -115,7 +115,7 @@ Create a HTML page with following UI characteristics:
 > **Output →** [`ai2.html`](ai2.html)
 
 <p align="center">
-  <img src="Screenshot%202026-02-09%20105332.png" width="400" alt="ai2.html screenshot 1" /> <img src="Screenshot%202026-02-09%20113048.png" width="400" alt="ai2.html screenshot 2" />
+  <img src="Screenshot 2026-02-09 200454.png" width="400" alt="ai2.html screenshot 1" />
 </p>
 
 ```
