@@ -52,7 +52,7 @@ https://github.com/koshal50/Ai-flash/blob/main/Generating_Cinematic_Nightmare_Fo
 
 ### 1 · Stranger Things Triptych Newspaper Collage
 
-> **Output →** `Gemini_Generated_Image_v1u7w3v1u7w3v1u7.png`
+> **Output →** `Gemini_Generated_Image_emczg9emczg9emcz.png`
 
 <p align="center">
   <img src="Gemini_Generated_Image_v1u7w3v1u7w3v1u7.png" width="600" alt="Prompt 1 output" />
@@ -69,7 +69,8 @@ https://github.com/koshal50/Ai-flash/blob/main/Generating_Cinematic_Nightmare_Fo
 
 ### 2 · Cinematic 80s Horror — Villain Emerging from the Rift
 
-> **Output →** `Gemini_Generated_Image_emczg9emczg9emcz.png`
+> **Output →** `Gemini_Generated_Image_v1u7w3v1u7w3v1u7.png`
+
 
 <p align="center">
   <img src="Gemini_Generated_Image_emczg9emczg9emcz.png" width="500" alt="Prompt 2 output" />
