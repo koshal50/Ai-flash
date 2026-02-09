@@ -1,2 +1,6 @@
 # Ai-flash
 prompt history
+1) image orompt - {
+  "model": "nano banana",
+  "prompt": "A triptych collage photograph displayed on a textured, dull off-white newspaper page background. The image is strictly divided into three vertical columns. \n\n[MIDDLE COLUMN]: At the very top, the retro red glowing 'Stranger Things' title logo. Directly below the logo is a grainy, printed photograph of young Will Byers, front profile view, looking terrified while wearing a hospital gown inside a dimly lit laboratory room. Below Will's photo, a block of printed typewriter text reads exacty: 'but the first gate was open by a scream in 1983'. \n\n[LEFT COLUMN]: At the top, a block of printed typewriter text reads exactly: 'in the depths of the upside down , vecna prepared to open the final gate'. Below the text is a landscape photograph of the town of Hawkins being overtaken by dark vines and spores of the Upside Down, but the sky above the town is surprisingly normal, dull, grey, and overcast, not red. \n\n[RIGHT COLUMN]: At the top, a block of printed typewriter text reads exactly: 'if you could hear a voice from static , would you believe itsyour friend or just thw wind?'. Below the text is a photograph of the exterior building of Hawkins National Laboratory heavily bathed in ominous, intense red light."
+}
